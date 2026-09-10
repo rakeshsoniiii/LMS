@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Neo Gyaan LMS"
+description = "A frontend-only learning platform for browsing courses, building learning paths, tracking progress, and viewing certificates through a premium editorial experience."
+version = "1.0.0"
+id = "artifacts/neo-gyaan"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25343
+
+[services.development]
+run = "pnpm --filter @workspace/neo-gyaan run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/neo-gyaan", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/neo-gyaan/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25343"
+BASE_PATH = "/"
