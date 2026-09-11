@@ -94,9 +94,61 @@
   .text-balance { text-wrap: balance; }
   .noise { position: relative; isolation: isolate; }
   .noise::after { content: ''; pointer-events: none; position: absolute; inset: 0; opacity: .035; z-index: 2; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E"); }
+  .bento-card {
+    border-radius: 1.5rem;
+    border: 1px solid rgba(7, 26, 51, 0.08);
+    background-color: #fffefa;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .bento-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 30px -10px rgba(7, 26, 51, 0.07);
+    border-color: rgba(7, 26, 51, 0.18);
+  }
+  .bento-card-dark {
+    border-radius: 1.5rem;
+    border: 1px solid rgba(247, 246, 241, 0.12);
+    background-color: #071a33;
+    color: #f7f6f1;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .bento-card-dark:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.3);
+    border-color: rgba(199, 240, 0, 0.4);
+  }
+  .bento-card-accent {
+    border-radius: 1.5rem;
+    background-color: #c7f000;
+    color: #071a33;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .bento-card-accent:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 30px -10px rgba(199, 240, 0, 0.35);
+  }
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+  .animate-float-delayed {
+    animation: float 4.5s 1.5s ease-in-out infinite;
+  }
+  .animate-glow {
+    animation: pulseGlow 3s ease-in-out infinite;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.25; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(1.05); }
 }
 
 .animate-rise { animation: rise .65s cubic-bezier(.2,.75,.25,1) both; }
 .animate-rise-delay { animation: rise .65s .12s cubic-bezier(.2,.75,.25,1) both; }
 @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-@media (min-width: 768px) { .page-shell { width: min(100% - 4rem, 1180px); } }
+@media (min-width: 768px) { .page-shell { width: min(100% - 4rem, 1220px); } }

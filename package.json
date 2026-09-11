@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "dev": "pnpm --filter @workspace/neo-gyaan run dev",
+    "dev:all": "pnpm -r --parallel run dev",
+    "dev:api": "pnpm --filter @workspace/api-server run dev",
+    "dev:mockup": "pnpm --filter @workspace/mockup-sandbox run dev",
     "preinstall": "sh -c 'rm -f package-lock.json yarn.lock; case \"$npm_config_user_agent\" in pnpm/*) ;; *) echo \"Use pnpm instead\" >&2; exit 1 ;; esac'",
     "build": "pnpm run typecheck && pnpm -r --if-present run build",
     "typecheck:libs": "tsc --build",
