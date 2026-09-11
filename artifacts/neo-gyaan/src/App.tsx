@@ -14,6 +14,7 @@ import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { PaymentModal, type PaymentItem } from '@/components/PaymentModal';
+import { FormHeroSection } from '@/components/FormHeroSection';
 import NotFound from '@/pages/not-found';
 
 const queryClient = new QueryClient();
@@ -151,35 +152,39 @@ function Header() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-[#071a33]/10 bg-[#f7f6f1]/90 backdrop-blur-md">
-      <div className="page-shell flex h-[72px] items-center justify-between gap-4">
+      <div className="w-full px-6 sm:px-10 lg:px-14 xl:px-18 flex h-[72px] items-center justify-between gap-4">
         <Logo />
-        <nav className="hidden items-center gap-5 lg:gap-7 md:flex" aria-label="Main navigation">
-          <Link href="/courses" className={`text-sm transition-colors hover:text-[#536300] ${location.startsWith('/courses') ? 'font-bold text-[#071a33]' : 'text-[#5e6670]'}`} data-testid="link-courses">Courses</Link>
-          <Link href="/#why-us" className="text-sm text-[#5e6670] transition-colors hover:text-[#536300]">Why Us</Link>
-          <Link href="/#testimonials" className="text-sm text-[#5e6670] transition-colors hover:text-[#536300]">Testimonials</Link>
-          <Link href="/pricing" className={`text-sm transition-colors hover:text-[#536300] ${location === '/pricing' ? 'font-bold text-[#071a33]' : 'text-[#5e6670]'}`} data-testid="link-pricing">Pricing</Link>
-          <Link href="/certificates" className={`text-sm transition-colors hover:text-[#536300] ${location === '/certificates' ? 'font-bold text-[#071a33]' : 'text-[#5e6670]'}`} data-testid="link-certificates">Certificates</Link>
-          <Link href="/dashboard" className={`text-sm transition-colors hover:text-[#536300] ${location === '/dashboard' ? 'font-bold text-[#071a33]' : 'text-[#5e6670]'}`} data-testid="link-dashboard">My Desk</Link>
+        <nav className="hidden items-center gap-6 lg:gap-8 md:flex" aria-label="Main navigation">
+          <Link href="/courses" className={`text-sm font-medium transition-colors hover:text-[#536300] ${location.startsWith('/courses') ? 'font-bold text-[#071a33]' : 'text-[#4d565e]'}`} data-testid="link-courses">Work</Link>
+          <Link href="/#why-us" className="text-sm font-medium text-[#4d565e] transition-colors hover:text-[#536300]">About</Link>
+          <Link href="/pricing" className={`text-sm font-medium transition-colors hover:text-[#536300] ${location === '/pricing' ? 'font-bold text-[#071a33]' : 'text-[#4d565e]'}`} data-testid="link-pricing">Pricing</Link>
+          <Link href="/#testimonials" className="text-sm font-medium text-[#4d565e] transition-colors hover:text-[#536300]">Contact</Link>
         </nav>
         <div className="hidden items-center gap-3 md:flex">
-          <div className="flex h-10 w-[180px] lg:w-[220px] items-center gap-2 rounded-full border border-[#071a33]/15 bg-[#fffefa] px-3.5 shadow-sm">
+          <div className="flex h-10 w-[170px] lg:w-[190px] items-center gap-2 rounded-full border border-[#071a33]/15 bg-[#fffefa] px-3.5 shadow-sm">
             <Search size={14} className="text-[#7b8188]" />
             <input 
               value={query} 
               onChange={(e) => setQuery(e.target.value)} 
               onKeyDown={(e) => e.key === 'Enter' && submitSearch()} 
               className="w-full bg-transparent text-xs outline-none placeholder:text-[#9da1a4]" 
-              placeholder="Search skills, topics..." 
+              placeholder="Search..." 
               aria-label="Search courses" 
               data-testid="input-header-search" 
             />
           </div>
-          <Link href="/login" className="px-2 text-xs font-semibold text-[#071a33]" data-testid="link-login">Log in</Link>
-          <Link href="/signup" className="rounded-full bg-[#071a33] px-5 py-2.5 text-xs font-bold text-[#f7f6f1] transition-transform hover:-translate-y-0.5 shadow-sm" data-testid="link-get-started">Get started</Link>
+          <Link 
+            href="/courses" 
+            className="inline-flex items-center gap-2 rounded-2xl bg-[#071a33] px-5 py-2.5 text-xs font-bold text-[#f7f6f1] transition-transform hover:-translate-y-0.5 shadow-md group"
+            data-testid="button-header-courses"
+          >
+            <LayoutGrid size={15} className="text-[#c7f000]" />
+            <span className="tracking-tight">Courses</span>
+          </Link>
         </div>
         <div className="flex items-center gap-2 md:hidden">
-          <button onClick={submitSearch} aria-label="Search courses" className="grid h-10 w-10 place-items-center rounded-full border border-[#071a33]/15" data-testid="button-mobile-search"><Search size={18} /></button>
-          <button onClick={() => setOpen(!open)} aria-label={open ? 'Close menu' : 'Open menu'} className="grid h-10 w-10 place-items-center rounded-full bg-[#071a33] text-[#f7f6f1]" data-testid="button-mobile-menu">{open ? <X size={19} /> : <Menu size={19} />}</button>
+          <button onClick={submitSearch} aria-label="Search courses" className="grid h-10 w-10 place-items-center rounded-xl border border-[#071a33]/15 bg-[#fffefa]" data-testid="button-mobile-search"><Search size={18} /></button>
+          <button onClick={() => setOpen(!open)} aria-label={open ? 'Close menu' : 'Open menu'} className="grid h-10 w-10 place-items-center rounded-xl bg-[#071a33] text-[#f7f6f1]" data-testid="button-mobile-menu">{open ? <X size={19} /> : <Menu size={19} />}</button>
         </div>
       </div>
       {open && (
@@ -369,34 +374,7 @@ function CourseCard({ course }: { course: Course }) {
 // ----------------------------------------------------
 function Home() {
   const { openCheckout } = usePayment();
-  const [selectedRoute, setSelectedRoute] = useState<'code' | 'design' | 'data'>('code');
   const [annualBilling, setAnnualBilling] = useState(false);
-  const [activeTab, setActiveTab] = useState<'preview' | 'code'>('preview');
-  const [simulatedCount, setSimulatedCount] = useState(42);
-
-  const routeDetails = {
-    code: {
-      title: 'Full-Stack Modern Web Engineering',
-      duration: '84 Hours / 12 Real Projects',
-      avgSalary: '₹14 - 28 LPA',
-      skills: ['React 19', 'TypeScript', 'Node.js', 'PostgreSQL', 'Docker'],
-      recommendedId: 'web-development'
-    },
-    design: {
-      title: 'Digital Product & UI/UX Systems',
-      duration: '62 Hours / 8 Portfolio Case Studies',
-      avgSalary: '₹12 - 24 LPA',
-      skills: ['Figma Tokens', 'Design Systems', 'Usability Audits', 'Framer'],
-      recommendedId: 'ui-ux-design'
-    },
-    data: {
-      title: 'Python for AI, Analytics & Modeling',
-      duration: '76 Hours / 10 Applied Data Pipelines',
-      avgSalary: '₹15 - 32 LPA',
-      skills: ['Python', 'Pandas', 'SQL', 'Predictive Modeling', 'ML Pipelines'],
-      recommendedId: 'data-science'
-    }
-  };
 
   return (
     <>
@@ -407,301 +385,9 @@ function Home() {
         <div className="absolute top-80 right-10 -z-10 h-[450px] w-[450px] rounded-full bg-[#071a33]/5 blur-[100px] pointer-events-none" />
 
         {/* ========================================================== */}
-        {/* HERO SECTION: MODERN BENTO GRID HERO */}
+        {/* HERO SECTION: FORM TEMPLATE AESTHETIC (MATCHING SCREENSHOT) */}
         {/* ========================================================== */}
-        <section className="page-shell pt-6 sm:pt-10 md:pt-14 pb-12 sm:pb-16">
-          <div className="grid gap-4 lg:grid-cols-12">
-            
-            {/* Bento Card 1: Main Spanning Headline (Span 8) */}
-            <motion.div 
-              initial={{ opacity: 0, y: 25 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="bento-card relative flex flex-col justify-between overflow-hidden p-6 sm:p-9 lg:p-10 lg:col-span-8 bg-gradient-to-br from-[#fffefa] via-[#fffefa] to-[#f3f9d2]/40"
-            >
-              <div className="relative z-10">
-                <div className="inline-flex items-center gap-2 rounded-full border border-[#071a33]/15 bg-[#f0efe9] px-3.5 py-1 text-[11px] font-bold text-[#071a33] mb-5 sm:mb-6 shadow-sm">
-                  <span className="h-2 w-2 rounded-full bg-[#c7f000] animate-pulse" />
-                  <span>2025 MASTERCLASS COHORT • ENROLLMENT LIVE</span>
-                </div>
-
-                <h1 className="font-display text-4xl sm:text-5xl lg:text-[4.3rem] font-bold leading-[.98] tracking-[-.06em] text-[#071a33]">
-                  Practical Knowledge.<br />
-                  <span className="text-[#728500]">Build What’s Next.</span>
-                </h1>
-
-                <p className="mt-4 sm:mt-5 max-w-[540px] text-xs sm:text-sm md:text-base leading-relaxed text-[#59646c]">
-                  Stop watching endless passive tutorials. Master modern software engineering, product design, and AI systems through rigorous, portfolio-grade project checkpoints.
-                </p>
-
-                <div className="mt-7 sm:mt-8 flex flex-wrap items-center gap-3">
-                  <Button href="/courses" variant="lime" testId="button-hero-explore">
-                    <span>Explore 100+ Courses</span>
-                    <ArrowRight size={16} />
-                  </Button>
-                  <Button href="/pricing" variant="outline" testId="button-hero-pricing">
-                    <span>View Pro Plans</span>
-                  </Button>
-                </div>
-              </div>
-
-              {/* Interactive Sandbox Mini-Preview Widget inside Hero */}
-              <div className="relative z-10 mt-8 rounded-2xl border border-[#071a33]/10 bg-[#f7f6f1] p-3 sm:p-4 shadow-sm">
-                <div className="flex items-center justify-between border-b border-[#071a33]/10 pb-2 mb-3">
-                  <div className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
-                    <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
-                    <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
-                    <span className="text-[11px] font-mono-custom text-[#717b82] ml-2">AppSandbox.tsx</span>
-                  </div>
-                  <div className="flex gap-1 rounded-lg bg-white p-0.5 border border-[#071a33]/10 text-[10px] font-bold">
-                    <button 
-                      onClick={() => setActiveTab('preview')}
-                      className={`flex items-center gap-1 rounded-md px-2 py-0.5 transition-colors ${
-                        activeTab === 'preview' ? 'bg-[#071a33] text-white' : 'text-[#717b82]'
-                      }`}
-                    >
-                      <Eye size={11} /> Live Demo
-                    </button>
-                    <button 
-                      onClick={() => setActiveTab('code')}
-                      className={`flex items-center gap-1 rounded-md px-2 py-0.5 transition-colors ${
-                        activeTab === 'code' ? 'bg-[#071a33] text-white' : 'text-[#717b82]'
-                      }`}
-                    >
-                      <Terminal size={11} /> Code
-                    </button>
-                  </div>
-                </div>
-
-                {activeTab === 'preview' ? (
-                  <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white rounded-xl p-3.5 border border-[#071a33]/10">
-                    <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-xl bg-[#c7f000] grid place-items-center text-[#071a33] font-display font-bold">
-                        NG
-                      </div>
-                      <div>
-                        <p className="text-xs font-bold text-[#071a33]">Interactive State Machine</p>
-                        <p className="text-[10px] text-[#717b82]">Click button to test active reactivity</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono-custom text-xs font-bold text-[#728500]">Count: {simulatedCount}</span>
-                      <button 
-                        onClick={() => setSimulatedCount(c => c + 1)} 
-                        className="rounded-full bg-[#071a33] px-3 py-1 text-[11px] font-bold text-white hover:bg-[#183658] transition-all active:scale-95"
-                      >
-                        + Trigger
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <pre className="overflow-x-auto rounded-xl bg-[#071a33] p-3 text-[11px] font-mono-custom text-[#c7f000] leading-relaxed">
-                    <code>{`export function Counter() {\n  const [val, setVal] = useState(${simulatedCount});\n  return <Button onClick={() => setVal(v => v + 1)}>Count: {val}</Button>;\n}`}</code>
-                  </pre>
-                )}
-              </div>
-
-              {/* Bottom Trust Strip */}
-              <div className="relative z-10 mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-[#071a33]/10 pt-5">
-                <div className="flex items-center gap-3">
-                  <div className="flex -space-x-2.5">
-                    {testimonials.map((t, idx) => (
-                      <img key={idx} src={t.avatar} alt={t.name} className="h-8 w-8 rounded-full border-2 border-[#fffefa] object-cover" />
-                    ))}
-                  </div>
-                  <div className="text-xs">
-                    <div className="flex items-center gap-1 font-bold text-[#071a33]">
-                      <Star size={13} fill="currentColor" className="text-[#a5c900]" />
-                      <span>4.9 / 5 Rating</span>
-                    </div>
-                    <span className="text-[11px] text-[#717c84]">50,000+ engineers & designers enrolled</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2 font-mono-custom text-xs font-bold text-[#728500]">
-                  <ShieldCheck size={16} />
-                  <span>VERIFIED CERTIFICATES INCLUDED</span>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Bento Card 2: Featured Course Spotlight (Span 4) */}
-            <motion.div 
-              initial={{ opacity: 0, y: 25 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="bento-card-dark relative flex flex-col justify-between overflow-hidden p-6 sm:p-7 lg:col-span-4"
-            >
-              <div className="absolute -right-10 -top-10 h-44 w-44 rounded-full bg-[#c7f000]/15 blur-3xl pointer-events-none" />
-              
-              <div>
-                <div className="flex items-center justify-between">
-                  <span className="eyebrow text-[#c7f000]">COURSE OF THE WEEK</span>
-                  <span className="rounded-full bg-[#c7f000] px-2.5 py-0.5 text-[10px] font-bold text-[#071a33]">STAFF PICK</span>
-                </div>
-
-                <div className="relative mt-4 aspect-video overflow-hidden rounded-xl border border-white/10 group">
-                  <img src={images.react} alt="Advanced React" className="h-full w-full object-cover opacity-80 transition-transform duration-500 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#071a33] to-transparent opacity-80" />
-                  <div className="absolute inset-0 grid place-items-center">
-                    <span className="grid h-12 w-12 place-items-center rounded-full bg-[#c7f000] text-[#071a33] shadow-lg animate-float">
-                      <Play size={20} fill="currentColor" />
-                    </span>
-                  </div>
-                </div>
-
-                <h3 className="mt-4 font-display text-xl font-bold leading-snug text-[#f7f6f1]">
-                  Advanced React & TypeScript Patterns
-                </h3>
-                <p className="mt-2 text-xs text-[#b8c4cb] line-clamp-2">
-                  Composition, state machines, type-safe RPCs, testing and scalable enterprise frontend architecture.
-                </p>
-              </div>
-
-              <div className="mt-6 border-t border-white/10 pt-4 flex items-center justify-between">
-                <div>
-                  <span className="font-display text-xl font-bold text-[#c7f000]">₹1,799</span>
-                  <del className="ml-2 text-xs text-[#8c9ba5]">₹3,599</del>
-                </div>
-                <button
-                  onClick={() => openCheckout({ title: 'Advanced React & TypeScript Patterns', price: 1799, type: 'course', courseId: 'react-typescript', badge: 'STAFF PICK' })}
-                  className="inline-flex items-center gap-1.5 rounded-full bg-[#c7f000] px-4 py-2 text-xs font-bold text-[#071a33] transition-transform hover:scale-105 shadow-sm"
-                >
-                  <span>Enroll Now</span>
-                  <ArrowRight size={14} />
-                </button>
-              </div>
-            </motion.div>
-
-            {/* Bento Card 3: Interactive Learning Streak (Span 4) */}
-            <motion.div 
-              initial={{ opacity: 0, y: 25 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-              className="bento-card p-6 lg:col-span-4 flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex items-center justify-between">
-                  <span className="eyebrow text-[#728500]">STUDENT STREAK</span>
-                  <span className="inline-flex items-center gap-1 rounded-full bg-[#fff4cc] px-2.5 py-0.5 text-[11px] font-bold text-[#946200]">
-                    <Flame size={14} className="text-[#e06d00] animate-pulse" /> 7 Day Streak
-                  </span>
-                </div>
-                <p className="mt-4 font-display text-3xl font-bold text-[#071a33]">12.4 Hours</p>
-                <p className="text-xs text-[#717b82]">Logged by active learners this week</p>
-
-                {/* Day Dots */}
-                <div className="mt-5 grid grid-cols-7 gap-1.5 text-center">
-                  {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, idx) => (
-                    <div key={idx} className="flex flex-col items-center gap-1">
-                      <span className="text-[10px] text-[#8c949a] font-mono-custom">{day}</span>
-                      <div className={`h-8 w-full rounded-lg flex items-center justify-center text-[10px] font-bold ${
-                        idx < 5 ? 'bg-[#c7f000] text-[#071a33]' : 'bg-[#e7e6e0] text-[#7b848a]'
-                      }`}>
-                        {idx < 5 ? <Check size={12} /> : '—'}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <p className="mt-4 text-[11px] text-[#717b82] flex items-center gap-1">
-                <TrendingUp size={14} className="text-[#728500]" />
-                Top 5% consistency milestone reached!
-              </p>
-            </motion.div>
-
-            {/* Bento Card 4: Interactive Skill Recommender (Span 5) */}
-            <motion.div 
-              initial={{ opacity: 0, y: 25 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="bento-card p-6 lg:col-span-5 flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex items-center justify-between">
-                  <span className="eyebrow text-[#728500]">CAREER ACCELERATOR</span>
-                  <span className="text-[11px] font-mono-custom text-[#717b82]">AVG: {routeDetails[selectedRoute].avgSalary}</span>
-                </div>
-
-                <div className="mt-3 flex gap-2">
-                  {(['code', 'design', 'data'] as const).map((key) => (
-                    <button
-                      key={key}
-                      onClick={() => setSelectedRoute(key)}
-                      className={`rounded-xl px-3 py-1.5 text-xs font-bold capitalize transition-all ${
-                        selectedRoute === key
-                          ? 'bg-[#071a33] text-[#f7f6f1] shadow-sm'
-                          : 'bg-[#f0efe9] text-[#636e76] hover:bg-[#e4e2d8]'
-                      }`}
-                    >
-                      {key === 'code' ? '💻 Engineering' : key === 'design' ? '🎨 UI/UX' : '📊 Data & AI'}
-                    </button>
-                  ))}
-                </div>
-
-                <div className="mt-4 rounded-xl bg-[#f7f6f1] p-3.5">
-                  <h4 className="font-display text-sm font-bold text-[#071a33]">{routeDetails[selectedRoute].title}</h4>
-                  <p className="mt-1 text-xs text-[#717b82]">{routeDetails[selectedRoute].duration}</p>
-                  <div className="mt-2.5 flex flex-wrap gap-1.5">
-                    {routeDetails[selectedRoute].skills.map((s) => (
-                      <span key={s} className="rounded-md bg-[#fffefa] px-2 py-0.5 text-[10px] font-semibold text-[#071a33] border border-[#071a33]/10">
-                        {s}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-4 flex items-center justify-between">
-                <Link href={`/courses/${routeDetails[selectedRoute].recommendedId}`} className="text-xs font-bold text-[#728500] hover:underline flex items-center gap-1">
-                  View Syllabus & Roadmaps <ArrowRight size={13} />
-                </Link>
-                <button
-                  onClick={() => {
-                    const c = courses.find((item) => item.id === routeDetails[selectedRoute].recommendedId);
-                    if (c) openCheckout({ title: c.title, price: c.price, type: 'course', courseId: c.id });
-                  }}
-                  className="rounded-full bg-[#071a33] px-3.5 py-1.5 text-xs font-bold text-[#f7f6f1] hover:bg-[#122e50]"
-                >
-                  Quick Enroll
-                </button>
-              </div>
-            </motion.div>
-
-            {/* Bento Card 5: Verified Credential Preview (Span 3) */}
-            <motion.div 
-              initial={{ opacity: 0, y: 25 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              className="bento-card-accent p-6 lg:col-span-3 flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex items-center justify-between">
-                  <span className="eyebrow text-[#071a33]">PROOF OF WORK</span>
-                  <Award size={20} className="text-[#071a33]" />
-                </div>
-                <h4 className="mt-3 font-display text-2xl font-bold tracking-tight text-[#071a33]">
-                  Verified Digital Certificate
-                </h4>
-                <p className="mt-2 text-xs leading-relaxed text-[#404c00]">
-                  Shareable on LinkedIn, GitHub, and resumes with cryptographically verifiable QR IDs.
-                </p>
-              </div>
-
-              <div className="mt-5 rounded-xl border border-[#071a33]/20 bg-white/40 p-3 backdrop-blur-sm">
-                <div className="flex items-center justify-between text-[11px] font-mono-custom font-bold text-[#071a33]">
-                  <span>ID: NG-84F2-91A</span>
-                  <span>ACCREDITED</span>
-                </div>
-                <Link href="/certificates" className="mt-2.5 block w-full rounded-lg bg-[#071a33] py-2 text-center text-xs font-bold text-[#f7f6f1] hover:bg-[#122e50]">
-                  View Certificate Demo
-                </Link>
-              </div>
-            </motion.div>
-
-          </div>
-        </section>
+        <FormHeroSection />
 
         {/* ========================================================== */}
         {/* STATS BENTO ROW (SCROLL-TRIGGERED) */}
