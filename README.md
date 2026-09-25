@@ -16,7 +16,7 @@ Neo Gyaan is a modern, high-performance Learning Management System (LMS) built w
 - **Backend**: Node.js, Express 5, Pino Logger
 - **Package Manager**: pnpm workspaces
 
-## 🚀 Getting Started
+## 🚀 Getting Started.
 
 ```bash
 # Install dependencies
