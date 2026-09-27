@@ -1,4 +1,4 @@
-# LMS — Neo Gyaan Learning Management System
+# LMS — Neo Gyaan Learning Management System.
 
 Neo Gyaan is a modern, high-performance Learning Management System (LMS) built with React 19, TypeScript, Vite, Tailwind CSS v4, and Framer Motion. It features an ultra-responsive Bento Grid UI, interactive sandbox widgets, verifiable digital credentials, dynamic student testimonials, transparent tuition tiers, and a simulated Dummy Payment Gateway (supporting UPI, Cards, and Net Banking)
 
